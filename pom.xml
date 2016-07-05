@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.mashape.unirest</groupId>
-	<artifactId>unirest-java</artifactId>
+	<groupId>me.sniggle.com.mashape.unirest</groupId>
+	<artifactId>unirest-java-android-shaped</artifactId>
 	<packaging>jar</packaging>
 	<version>1.4.10-SNAPSHOT</version>
 	<name>unirest-java</name>
@@ -48,6 +48,41 @@
 
 	<build>
 		<plugins>
+			<plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.2</version>
+        <executions>
+          <execution>
+          <phase>package</phase>
+          <goals>
+            <goal>shade</goal>
+          </goals>
+          <configuration>
+            <finalName>${project.artifactId}-${project.version}-withDependency-ShadedForAndroid</finalName>
+            <artifactSet>
+              <includes>
+                <include>com.mashape.unirest:unirest-java</include>
+                <include>org.apache.httpcomponents:httpclient</include>
+                <include>org.apache.httpcomponents:httpcore</include>
+                <include>org.apache.httpcomponents:httpcore-nio</include>
+                <include>org.apache.httpcomponents:httpasyncclient</include>
+                <include>org.apache.httpcomponents:httpmime</include>
+                <include>org.json:json</include>
+                <include>commons-logging:commons-logging</include>
+                <include>commons-codec:commons-codec</include>
+              </includes>
+            </artifactSet>
+            <relocations>
+              <relocation>
+                <pattern>org.apache.http</pattern>
+                <shadedPattern>com.mashape.relocation</shadedPattern>
+              </relocation>
+            </relocations>
+          </configuration>
+        </execution>
+      </executions>
+      </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
